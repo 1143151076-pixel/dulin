@@ -68,7 +68,9 @@ def score(cases, rows):
             'review_recall':tp/(tp+fn) if tp+fn else None,'false_safe':fn,'errors':errors}
 
 
-def query_history(transactions):
+def query_history(transactions, method="reference"):
+    if method not in {"reference", "window"}:
+        raise ValueError("Unknown query method")
     expected=['transaction_id','user_id','ts','amount_cents']
     if set(transactions.columns)!=set(expected) or transactions.empty:
         raise ValueError('Transaction schema or empty input')
@@ -82,7 +84,8 @@ def query_history(transactions):
     with sqlite3.connect(':memory:') as db:
         transactions.to_sql('transactions',db,index=False)
         db.execute('CREATE INDEX history_idx ON transactions(user_id,ts)')
-        return pd.read_sql_query((ROOT/'last_30_days.sql').read_text(),db)
+        query = 'last_30_days.sql' if method == 'reference' else 'last_30_days_window.sql'
+        return pd.read_sql_query((ROOT/query).read_text(),db)
 
 
 def evaluate_rule(scored, labels):
@@ -106,7 +109,7 @@ def experiment(seed=20261107,n=2000,effect=-2.0):
     # One row per independent company, assignment before outcome, fixed horizon.
     rng=np.random.default_rng(seed)
     treatment=rng.integers(0,2,n)
-    baseline_minutes=rng.normal(15,4,n)
+    baseline_minutes=2.0+rng.lognormal(np.log(13)-0.5*0.6**2,0.6,n)
     outcomes=baseline_minutes+treatment*effect
     control=outcomes[treatment==0]; treated=outcomes[treatment==1]
     test=ttest_ind(treated,control,equal_var=False)
@@ -114,6 +117,7 @@ def experiment(seed=20261107,n=2000,effect=-2.0):
     srm=float(chisquare([len(control),len(treated)]).pvalue)
     return {'data':'synthetic independent company-level outcomes','companies':n,
             'assignment_counts':[len(control),len(treated)],'seed':seed,
+            'outcome_generator':'2 + lognormal with log-sigma 0.6, mean about 15 minutes before treatment',
             'injected_effect_minutes':effect,'estimated_treatment_minus_control_minutes':float(treated.mean()-control.mean()),
             'welch_95_ci':[float(ci.low),float(ci.high)],'two_sided_p_value':float(test.pvalue),
             'sample_ratio_mismatch_p':srm,'analysis_valid_under_srm_gate':srm>=.01,
@@ -135,7 +139,9 @@ def main():
     labels=pd.DataFrame({'transaction_id':np.arange(n),'is_fraud':fraud.astype(float)})
     labels.loc[rng.random(n)<.1,'is_fraud']=np.nan
     scored=query_history(tx)
-    sql={'rows':n,'users':int(tx.user_id.nunique()),'seed':20261107,
+    window_scored=query_history(tx, method='window')
+    pd.testing.assert_frame_equal(scored,window_scored)
+    sql={'reference_window_equivalence':True,'rows':n,'users':int(tx.user_id.nunique()),'seed':20261107,
          'window':'[timestamp-30 days,timestamp), excluding same-time peers',
          'evaluation':evaluate_rule(scored,labels)}
     (ROOT/'sql_results.json').write_text(json.dumps(sql,indent=2))

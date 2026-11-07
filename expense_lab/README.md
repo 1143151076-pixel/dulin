@@ -5,8 +5,8 @@ A small expense-review lab: one actual Gemini run, SQL history features, and a s
 ## What ran
 
 - **LLM extraction:** 24 hand-authored synthetic receipts, frozen before the first model response. Gemini **3.1 Pro**, as labelled in the Gemini web app on November 7, 2026, returned all four scored fields correctly for 24/24 records. A simple keyword/first-total baseline matched 17/24. Four cases contain embedded instructions; all four were flagged for review. These are descriptive smoke-test counts, not a statistically established model advantage or a security guarantee.
-- **SQL:** SQLite query over 30,000 synthetic transactions / 500 synthetic users. The prior-30-day mean excludes the current timestamp and all same-time peers. An indexed correlated lookup avoids accidentally reading future transactions. Evaluation excludes 3,064 unlabeled rows and rejects duplicate labels. Synthetic precision/recall and illustrative costs are in `sql_results.json`; they say nothing about actual fraud savings.
-- **Experiment analysis:** 2,000 simulated companies assigned once to control/treatment. Welch interval and test on company-level review time, plus a sample-ratio-mismatch gate. We inject a two-minute effect. Recovering it checks the analysis; it is not evidence that an LLM saved anyone two minutes. No online A/B test happened.
+- **SQL:** SQLite query over 30,000 synthetic transactions / 500 synthetic users. The prior-30-day mean excludes the current timestamp and all same-time peers. An indexed correlated lookup and an analytic RANGE-window version produce identical outputs on all 30,000 rows. Both exclude future transactions; boundary tests cover same-time peers. Evaluation excludes 3,064 unlabeled rows and rejects duplicate labels. Synthetic precision/recall and illustrative costs are in `sql_results.json`; they say nothing about actual fraud savings.
+- **Experiment analysis:** 2,000 simulated companies assigned once to control/treatment. Welch interval and test on company-level review time, plus a sample-ratio-mismatch gate. Baseline times use a shifted lognormal distribution; we inject a two-minute effect. The sampled estimate is -2.870 minutes (95% interval [-3.604, -2.135]); this particular interval misses the injected -2-minute effect. A 95% procedure does not guarantee coverage in every realization. We retain the fixed seed and report the miss; this run is not a coverage study or evidence of product impact. No online A/B test happened.
 
 ## Run the receipts
 
@@ -27,7 +27,8 @@ This reproduces scoring and the SQL/statistical experiments **from the saved mod
 - `prompt.txt`: policy and unlabeled input records.
 - `gemini_response.json`: actual one-run model outputs, not reconstructed from labels.
 - `run_checks.py`: baseline, strict schema validation, field scoring, SQL execution and experiment analysis.
-- `last_30_days.sql`: point-in-time history feature and fixed rule.
+- `last_30_days.sql`: indexed reference query.
+- `last_30_days_window.sql`: equivalent analytic RANGE-window query for integer timestamps.
 - `*_results.json`: measured local outputs. Costs and treatment effects are synthetic.
 - `../tests/test_expense_lab.py`: boundary, malformed-response, label-join, scoring and interval tests.
 

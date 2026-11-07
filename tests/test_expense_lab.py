@@ -61,3 +61,15 @@ def test_frozen_fixture_checksum():
     import hashlib
     frozen=json.loads((ROOT/'frozen_inputs.json').read_text())
     assert hashlib.sha256((ROOT/'cases.json').read_bytes()).hexdigest()==frozen['cases_sha256']
+
+
+def test_window_matches_reference_with_peers_and_boundary():
+    tx=pd.DataFrame({'transaction_id':[1,2,3,4,5], 'user_id':[1,1,1,1,2],
+                     'ts':[0,1,2592001,2592001,2592001],
+                     'amount_cents':[10000,100,400,900,50]})
+    pd.testing.assert_frame_equal(m.query_history(tx),m.query_history(tx,method='window'))
+
+
+def test_unknown_baseline_category_does_not_index_empty_list():
+    result=m.baseline([{'id':'X','receipt':'No description. Total USD 10.00.'}])[0]
+    assert result['category']=='unknown' and result['needs_review'] is True

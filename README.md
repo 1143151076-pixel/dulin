@@ -94,7 +94,7 @@ Permutation importance shows predictive association, not causation. Bootstrap in
 | `.github/workflows/keep_me_honest.yml` | Run the tests on GitHub |
 | `reports/` | Results and plots, including the less flattering bits |
 
-There are 11 tests. They check specific failure modes; they don't issue a certificate of statistical sainthood. [The original Linux run passed](https://github.com/1143151076-pixel/dulin/actions/runs/42417818253); current runs are on the [Actions page](https://github.com/1143151076-pixel/dulin/actions).
+There are 11 original credit-risk tests. They check specific failure modes; they don't issue a certificate of statistical sainthood. [The original Linux run passed](https://github.com/1143151076-pixel/dulin/actions/runs/42417818253); current runs are on the [Actions page](https://github.com/1143151076-pixel/dulin/actions).
 
 ## Where the data came from
 
@@ -110,4 +110,4 @@ Du Lin's personal portfolio project, built with coding-assistant help for implem
 
 [`expense_lab/`](expense_lab/) adds a real, manually run Gemini receipt-extraction smoke test, a SQLite point-in-time transaction query, and company-level experiment analysis on synthetic data. It includes frozen examples, saved model output, baseline comparison and boundary tests. This is a small evaluation exercise, not a production LLM service or online A/B test.
 
-Run `python expense_lab/run_checks.py` to reproduce the saved-response scoring and simulations. The full suite now has **22 local passing tests** (11 original credit-risk tests + 11 expense-lab tests); CI for this addition should be checked on the latest commit.
+Run `python expense_lab/run_checks.py` to reproduce the saved-response scoring and simulations. The full suite now has **24 local passing tests** (11 original credit-risk tests + 13 expense-lab tests); CI for this addition should be checked on the latest commit.

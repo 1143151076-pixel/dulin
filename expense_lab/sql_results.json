@@ -1,4 +1,5 @@
 {
+  "reference_window_equivalence": true,
   "rows": 30000,
   "users": 500,
   "seed": 20261107,
