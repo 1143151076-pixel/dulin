@@ -1,0 +1,5 @@
+{
+  "cases_sha256": "a060085a4e03ede57829139247776fa58cdc181641e81032201c28c738242338",
+  "prompt_sha256": "bcbe1e19e21750d4b6f5a5e1293c5dbd62eae6c91fcada021edcbefe115e5ea3",
+  "design": "24 hand-authored synthetic cases, fixed before first model response; no real receipts; no tuning on this set; descriptive smoke test, not a representative benchmark."
+}

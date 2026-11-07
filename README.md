@@ -105,3 +105,9 @@ Useful references: [average precision](https://scikit-learn.org/stable/modules/g
 ## Who made this
 
 Du Lin's personal portfolio project, built with coding-assistant help for implementation, execution, and documentation. Not a Ramp project or a university research deliverable. The code and results are here to inspect and reproduce; understanding them still takes actual work. Annoying, but true.
+
+## A second lab: receipts, please
+
+[`expense_lab/`](expense_lab/) adds a real, manually run Gemini receipt-extraction smoke test, a SQLite point-in-time transaction query, and company-level experiment analysis on synthetic data. It includes frozen examples, saved model output, baseline comparison and boundary tests. This is a small evaluation exercise, not a production LLM service or online A/B test.
+
+Run `python expense_lab/run_checks.py` to reproduce the saved-response scoring and simulations. The full suite now has **22 local passing tests** (11 original credit-risk tests + 11 expense-lab tests); CI for this addition should be checked on the latest commit.

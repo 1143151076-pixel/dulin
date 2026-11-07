@@ -1,0 +1,166 @@
+{
+  "design": "24 hand-authored synthetic cases, fixed before first model response; no real receipts; no tuning on this set; descriptive smoke test, not a representative benchmark.",
+  "baseline": {
+    "n": 24,
+    "exact_records": 17,
+    "correct_fields": {
+      "category": 23,
+      "amount": 22,
+      "currency": 23,
+      "needs_review": 20
+    },
+    "review_precision": 1.0,
+    "review_recall": 0.7142857142857143,
+    "false_safe": 4,
+    "errors": [
+      {
+        "id": "E13",
+        "fields": [
+          "currency"
+        ],
+        "predicted": {
+          "id": "E13",
+          "category": "travel",
+          "amount": null,
+          "currency": null,
+          "needs_review": true
+        },
+        "expected": {
+          "category": "travel",
+          "amount": null,
+          "currency": "USD",
+          "needs_review": true
+        }
+      },
+      {
+        "id": "E14",
+        "fields": [
+          "amount",
+          "needs_review"
+        ],
+        "predicted": {
+          "id": "E14",
+          "category": "meals",
+          "amount": 45.0,
+          "currency": "USD",
+          "needs_review": false
+        },
+        "expected": {
+          "category": "meals",
+          "amount": null,
+          "currency": "USD",
+          "needs_review": true
+        }
+      },
+      {
+        "id": "E17",
+        "fields": [
+          "needs_review"
+        ],
+        "predicted": {
+          "id": "E17",
+          "category": "meals",
+          "amount": 31.0,
+          "currency": "USD",
+          "needs_review": false
+        },
+        "expected": {
+          "category": "meals",
+          "amount": 31,
+          "currency": "USD",
+          "needs_review": true
+        }
+      },
+      {
+        "id": "E18",
+        "fields": [
+          "category"
+        ],
+        "predicted": {
+          "id": "E18",
+          "category": "unknown",
+          "amount": 210.0,
+          "currency": "EUR",
+          "needs_review": true
+        },
+        "expected": {
+          "category": "lodging",
+          "amount": 210,
+          "currency": "EUR",
+          "needs_review": true
+        }
+      },
+      {
+        "id": "E19",
+        "fields": [
+          "needs_review"
+        ],
+        "predicted": {
+          "id": "E19",
+          "category": "software",
+          "amount": 99.0,
+          "currency": "USD",
+          "needs_review": false
+        },
+        "expected": {
+          "category": "software",
+          "amount": 99,
+          "currency": "USD",
+          "needs_review": true
+        }
+      },
+      {
+        "id": "E20",
+        "fields": [
+          "needs_review"
+        ],
+        "predicted": {
+          "id": "E20",
+          "category": "travel",
+          "amount": 22.0,
+          "currency": "USD",
+          "needs_review": false
+        },
+        "expected": {
+          "category": "travel",
+          "amount": 22,
+          "currency": "USD",
+          "needs_review": true
+        }
+      },
+      {
+        "id": "E23",
+        "fields": [
+          "amount"
+        ],
+        "predicted": {
+          "id": "E23",
+          "category": "software",
+          "amount": 150.0,
+          "currency": "USD",
+          "needs_review": false
+        },
+        "expected": {
+          "category": "software",
+          "amount": 125,
+          "currency": "USD",
+          "needs_review": false
+        }
+      }
+    ]
+  },
+  "gemini": {
+    "n": 24,
+    "exact_records": 24,
+    "correct_fields": {
+      "category": 24,
+      "amount": 24,
+      "currency": 24,
+      "needs_review": 24
+    },
+    "review_precision": 1.0,
+    "review_recall": 1.0,
+    "false_safe": 0,
+    "errors": []
+  }
+}

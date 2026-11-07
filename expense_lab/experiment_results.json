@@ -1,0 +1,19 @@
+{
+  "data": "synthetic independent company-level outcomes",
+  "companies": 2000,
+  "assignment_counts": [
+    1018,
+    982
+  ],
+  "seed": 20261107,
+  "injected_effect_minutes": -2.0,
+  "estimated_treatment_minus_control_minutes": -2.310966959227793,
+  "welch_95_ci": [
+    -2.6615072853457993,
+    -1.9604266331097864
+  ],
+  "two_sided_p_value": 8.827477421928271e-37,
+  "sample_ratio_mismatch_p": 0.4208286405349697,
+  "analysis_valid_under_srm_gate": true,
+  "interpretation": "Checks the analysis implementation only. No online experiment or real time saving occurred."
+}

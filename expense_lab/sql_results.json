@@ -1,0 +1,17 @@
+{
+  "rows": 30000,
+  "users": 500,
+  "seed": 20261107,
+  "window": "[timestamp-30 days,timestamp), excluding same-time peers",
+  "evaluation": {
+    "evaluated_rows": 26936,
+    "unlabeled_rows": 3064,
+    "tp": 643,
+    "fp": 146,
+    "fn": 150,
+    "precision": 0.8149556400506971,
+    "recall": 0.8108448928121059,
+    "illustrative_cost_cents": 3941850,
+    "note": "Synthetic labels and costs, not measured fraud savings."
+  }
+}
