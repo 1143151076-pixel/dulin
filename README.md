@@ -60,7 +60,7 @@ The threshold minimizes validation `FP + 5 × FN`, an **illustrative assumption*
 
 ## Engineering and tests
 
-The package separates acquisition/schema checks, model construction/evaluation, and CLI execution. Eleven local tests cover duplicate-group separation, malformed inputs, column-order invariance, nonmutating feature construction, training-only imputation, model serialization, and threshold/count correctness. A GitHub Actions workflow is included; hosted CI has not run until the repository is published. Validation permutation importance is in `reports/feature_importance.csv` and measures predictive association, not causation.
+The package separates acquisition/schema checks, model construction/evaluation, and CLI execution. Eleven local tests cover duplicate-group separation, malformed inputs, column-order invariance, nonmutating feature construction, training-only imputation, model serialization, and threshold/count correctness. The published GitHub Actions workflow passed all 11 tests on Linux; see [the verified run](https://github.com/1143151076-pixel/dulin/actions/runs/42417818253). Validation permutation importance is in `reports/feature_importance.csv` and measures predictive association, not causation.
 
 ## Data and limitations
 
