@@ -1,4 +1,4 @@
-"""Run with python -m credit_risk.cli train or predict."""
+"""Run with python -m credit_risk.run_it train or predict."""
 import argparse
 import json
 import platform
@@ -35,15 +35,15 @@ def train(root):
         results[name] = metrics(y[va], p)
         results[name]['fit_seconds'] = round(time.perf_counter() - begin, 3)
         print(name, json.dumps(results[name]), flush=True)
-    # Freeze decisions before computing any test-set predictions.
+    # Pick now. The test set is not a suggestion box.
     selected = max(results, key=lambda name: (results[name]['average_precision'], -results[name]['brier_score']))
     estimator = models_by_name[selected]
     threshold = select_threshold(y[va], estimator.predict_proba(x.iloc[va])[:, 1])
     importance = permutation_importance(estimator, x.iloc[va], y[va], scoring='average_precision',
                                       n_repeats=3, random_state=42, n_jobs=1)
     pd.DataFrame({'feature': FEATURES, 'validation_ap_decrease': importance.importances_mean,
-                  'std': importance.importances_std}).sort_values('validation_ap_decrease', ascending=False).to_csv(reports / 'feature_importance.csv', index=False)
-    # One final holdout evaluation after model and threshold selection.
+                  'std': importance.importances_std}).sort_values('validation_ap_decrease', ascending=False).to_csv(reports / 'what_mattered.csv', index=False)
+    # Decisions locked. Time for the awkward bit: the holdout.
     p = estimator.predict_proba(x.iloc[te])[:, 1]
     test = metrics(y[te], p, threshold)
     report = {'source_url': URL, 'source_sha256': checksum, 'rows': len(df),
@@ -58,7 +58,7 @@ def train(root):
               'test_group_bootstrap_95_ci': bootstrap_ci(y[te], p, groups[te]),
               'runtime': {'python': platform.python_version(), 'sklearn': sklearn.__version__},
               'elapsed_seconds': round(time.perf_counter() - started, 2)}
-    (reports / 'metrics.json').write_text(json.dumps(report, indent=2))
+    (reports / 'the_numbers.json').write_text(json.dumps(report, indent=2))
     # IDs facilitate audit, with raw data and row predictions excluded from publication.
     pd.DataFrame({'id': df['ID'], 'split': [''] * len(df)}).assign(
         split=np.select([df.index.isin(tr), df.index.isin(va)], ['train','validation'], default='test')
@@ -80,7 +80,7 @@ def train(root):
     observed, predicted = calibration_curve(y[te], p, n_bins=10, strategy='quantile')
     axes[2].plot(predicted, observed, 'o-', color='#147d92'); axes[2].plot([0,1], [0,1], '--', color='gray')
     axes[2].set(xlabel='Mean predicted probability', ylabel='Observed default rate', title='Calibration (quantile bins)')
-    fig.tight_layout(); fig.savefig(reports / 'evaluation.png', dpi=160); plt.close(fig)
+    fig.tight_layout(); fig.savefig(reports / 'reality_check.png', dpi=160); plt.close(fig)
     print(json.dumps(report, indent=2), flush=True)
 
 

@@ -1,4 +1,4 @@
-"""Official UCI acquisition and strict inference schema."""
+"""Get the data. Check the columns. Refuse obvious nonsense."""
 from pathlib import Path
 import hashlib
 import urllib.request

@@ -1,4 +1,4 @@
-name: tests
+name: Keep me honest
 on: [push, pull_request]
 permissions:
   contents: read

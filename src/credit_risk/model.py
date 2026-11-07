@@ -1,4 +1,4 @@
-"""Training-only preprocessing, grouped partitions and validation-only decisions."""
+"""Models and evaluation. The test set does not get to help with homework."""
 import numpy as np
 import pandas as pd
 from sklearn.pipeline import Pipeline
