@@ -1,0 +1,152 @@
+{
+  "source_url": "https://archive.ics.uci.edu/static/public/350/default%2Bof%2Bcredit%2Bcard%2Bclients.zip",
+  "source_sha256": "56c885f84457f6680f8438f02bfcdac9579323d8a94465ee5f26e32baa727602",
+  "rows": 30000,
+  "raw_features": 19,
+  "engineered_features": 6,
+  "excluded": [
+    "ID",
+    "SEX",
+    "EDUCATION",
+    "MARRIAGE",
+    "AGE"
+  ],
+  "seed": 42,
+  "selected_model": "calibrated_gradient_boosting",
+  "threshold": 0.194,
+  "selection_metric": "validation average precision; lower Brier breaks ties",
+  "cost_assumption": "False negative = 5 units; false positive = 1 unit; illustrative only",
+  "splits": {
+    "train": {
+      "rows": 17962,
+      "positive_rate": 0.21979734996102884,
+      "groups": 17509
+    },
+    "validation": {
+      "rows": 6025,
+      "positive_rate": 0.22406639004149378,
+      "groups": 5837
+    },
+    "test": {
+      "rows": 6013,
+      "positive_rate": 0.2225178779311492,
+      "groups": 5837
+    }
+  },
+  "validation": {
+    "prior_baseline": {
+      "roc_auc": 0.5,
+      "average_precision": 0.22406639004149378,
+      "brier_score": 0.17387886759847557,
+      "precision": 0.0,
+      "recall": 0.0,
+      "flag_rate": 0.0,
+      "confusion_matrix": [
+        [
+          4675,
+          0
+        ],
+        [
+          1350,
+          0
+        ]
+      ],
+      "illustrative_cost_per_1000": 1120.331950207469,
+      "fit_seconds": 0.044
+    },
+    "logistic_regression": {
+      "roc_auc": 0.7312545850663498,
+      "average_precision": 0.49322589416653295,
+      "brier_score": 0.1469114519033453,
+      "precision": 0.6837209302325581,
+      "recall": 0.21777777777777776,
+      "flag_rate": 0.07136929460580912,
+      "confusion_matrix": [
+        [
+          4539,
+          136
+        ],
+        [
+          1056,
+          294
+        ]
+      ],
+      "illustrative_cost_per_1000": 898.9211618257261,
+      "fit_seconds": 0.063
+    },
+    "gradient_boosting": {
+      "roc_auc": 0.7788160031689443,
+      "average_precision": 0.5488080441282623,
+      "brier_score": 0.13602216650477325,
+      "precision": 0.6791147994467497,
+      "recall": 0.3637037037037037,
+      "flag_rate": 0.12,
+      "confusion_matrix": [
+        [
+          4443,
+          232
+        ],
+        [
+          859,
+          491
+        ]
+      ],
+      "illustrative_cost_per_1000": 751.3692946058092,
+      "fit_seconds": 0.95
+    },
+    "calibrated_gradient_boosting": {
+      "roc_auc": 0.7796646464646464,
+      "average_precision": 0.5515733541382495,
+      "brier_score": 0.1362774037728677,
+      "precision": 0.6902017291066282,
+      "recall": 0.3548148148148148,
+      "flag_rate": 0.11518672199170124,
+      "confusion_matrix": [
+        [
+          4460,
+          215
+        ],
+        [
+          871,
+          479
+        ]
+      ],
+      "illustrative_cost_per_1000": 758.50622406639,
+      "fit_seconds": 2.202
+    }
+  },
+  "test": {
+    "roc_auc": 0.8053978721533457,
+    "average_precision": 0.5999633439559695,
+    "brier_score": 0.12882813196413123,
+    "precision": 0.426299957026214,
+    "recall": 0.7414050822122571,
+    "flag_rate": 0.3869948445035756,
+    "confusion_matrix": [
+      [
+        3340,
+        1335
+      ],
+      [
+        346,
+        992
+      ]
+    ],
+    "illustrative_cost_per_1000": 509.7289206718776
+  },
+  "test_group_bootstrap_95_ci": {
+    "roc_auc": [
+      0.7911610495889609,
+      0.819694506668613
+    ],
+    "average_precision": [
+      0.5694798378917967,
+      0.6277824158263033
+    ]
+  },
+  "runtime": {
+    "python": "3.14.7",
+    "sklearn": "1.9.1"
+  },
+  "elapsed_seconds": 9.65
+}
